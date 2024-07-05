@@ -35,3 +35,47 @@ This project is a backend application for user authentication and organization m
    ```bash
    git clone https://github.com/sethdanny/user-auth-organisation.git
    cd user-auth-organisation
+
+2. Install dependencies:
+npm install
+
+3. Create a `.env` file in the root directory and add the following environment variables:
+DATABASE_URL=postgres://username:password@localhost:5432/your_database
+JWT_SECRET=your_jwt_secret
+
+4. Set up the database:
+npx sequelize-cli db:create
+npx sequelize-cli db:migrate
+
+5. Start the server:
+npm start
+The server should now be running on `http://localhost:3000`.
+
+## API Endpoints
+### Auth Endpoints
+* POST /auth/register - Register a new user and create a default organization.
+    * Request Body:
+{
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string",
+  "password": "string",
+  "phone": "string"
+}.
+
+* Success Response:
+{
+  "status": "success",
+  "message": "Registration successful",
+  "data": {
+    "accessToken": "eyJh...",
+    "user": {
+      "userId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "phone": "string"
+    }
+  }
+}
+
