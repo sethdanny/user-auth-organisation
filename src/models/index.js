@@ -1,19 +1,19 @@
 const {Sequelize} = require('sequelize');
-const config = require('../config/config.js');
 const dotenv = require('dotenv');
 dotenv.config()
 
 
-const sequelize = new Sequelize(config.USER, config.PASSWORD,config.DB,{
-    host: config.HOST,
+const sequelize = new Sequelize(process.env.DATABASE_URI,{
     dialect: 'postgres',
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-      }
+    protocol: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+}
 });
+
 const testConnection = async () => {
     try {
         await sequelize.authenticate();
