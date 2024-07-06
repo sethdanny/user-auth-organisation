@@ -3,7 +3,7 @@ const {
   getAllOrganisations,
   getOrganisationById,
   createOrganisation,
-} = require('../controllers/organisationController');
+} = require('../controllers/orgController');
 const authenticate = require('../middleware/authenticate');
 
 const router = express.Router();

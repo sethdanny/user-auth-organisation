@@ -61,13 +61,15 @@ const register = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(400).json({
+      console.error('Error during registration:', error);
+      return res.status(400).json({
       status: 'Bad request',
       message: 'Registration unsuccessful',
+      //details: error.errors || error,
       statusCode: 400,
-    });
-  }
+  })
 };
+}
 
 const login = async (req, res) => {
   const { email, password } = req.body;
