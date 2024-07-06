@@ -1,29 +1,4 @@
-const { Organisation, OrganisationsOnUsers } = require('../models');
-/*
-const getAllOrganisations = async (req, res) => {
-  try {
-    const organisations = await OrganisationsOnUsers.findAll({
-      where: { userId: req.user.userId },
-      include: [Organisation],
-    });
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'Organisations retrieved successfully',
-      data: {
-        organisations: organisations.map((org) => org.Organisation),
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({
-      status: 'Bad request',
-      message: 'Error retrieving organisations',
-    });
-  }
-};
-
-*/
+const { Organisation, OrganisationsOnUsers, User } = require('../models');
 
 const getAllOrganisations = async (req, res) => {
   try {
@@ -118,4 +93,55 @@ const createOrganisation = async (req, res) => {
   }
 };
 
-module.exports = { getAllOrganisations, getOrganisationById, createOrganisation };
+const addUserToOrganisation = async (req, res) => {
+  const { orgId } = req.params;
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(422).json({
+      status: 'Unprocessable Entity',
+      message: 'User ID is required',
+    });
+  }
+
+  try {
+    const organisation = await Organisation.findByPk(orgId);
+    if (!organisation) {
+      return res.status(404).json({
+        status: 'Not Found',
+        message: 'Organisation not found',
+      });
+    }
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({
+        status: 'Not Found',
+        message: 'User not found',
+      });
+    }
+
+    await OrganisationsOnUsers.create({
+      userId,
+      organisationId: orgId,
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'User added to organisation successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      status: 'Bad request',
+      message: 'Error adding user to organisation',
+    });
+  }
+};
+
+module.exports = {
+  getAllOrganisations,
+  getOrganisationById,
+  createOrganisation,
+  addUserToOrganisation
+};
