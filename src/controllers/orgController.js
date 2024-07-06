@@ -1,5 +1,5 @@
 const { Organisation, OrganisationsOnUsers } = require('../models');
-
+/*
 const getAllOrganisations = async (req, res) => {
   try {
     const organisations = await OrganisationsOnUsers.findAll({
@@ -15,6 +15,37 @@ const getAllOrganisations = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      status: 'Bad request',
+      message: 'Error retrieving organisations',
+    });
+  }
+};
+
+*/
+
+const getAllOrganisations = async (req, res) => {
+  try {
+    const organisations = await OrganisationsOnUsers.findAll({
+      where: { userId: req.user.userId },
+      include: [
+        {
+          model: Organisation,
+          required: true,
+        }
+      ],
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Organisations retrieved successfully',
+      data: {
+        organisations: organisations.map((org) => org.Organisation),
+      },
+    });
+  } catch (error) {
+    console.error(error);
     return res.status(400).json({
       status: 'Bad request',
       message: 'Error retrieving organisations',
@@ -79,6 +110,7 @@ const createOrganisation = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error(error);
     return res.status(400).json({
       status: 'Bad request',
       message: 'Error creating organisation',

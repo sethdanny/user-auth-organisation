@@ -27,8 +27,7 @@ const getUserById = async (req, res) => {
   } catch (error) {
     return res.status(400).json({
       status: 'Bad request',
-      //message: 'Error retrieving user',
-      message: error.message
+      message: 'Error retrieving user',
     });
   }
 };

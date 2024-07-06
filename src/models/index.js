@@ -24,6 +24,9 @@ const OrganisationsOnUsers = OrganisationsOnUsersModel(sequelize);
 User.belongsToMany(Organisation, { through: OrganisationsOnUsers, foreignKey: 'userId' });
 Organisation.belongsToMany(User, { through: OrganisationsOnUsers, foreignKey: 'organisationId' }); 
 
+OrganisationsOnUsers.belongsTo(User, { foreignKey: 'userId' });
+OrganisationsOnUsers.belongsTo(Organisation, { foreignKey: 'organisationId' });
+
 sequelize.sync({ alter: true });
 
 const testConnection = async () => {

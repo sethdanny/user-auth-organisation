@@ -4,7 +4,7 @@ const {
   getOrganisationById,
   createOrganisation,
 } = require('../controllers/orgController');
-const authenticate = require('../middleware/authenticate');
+const authenticate = require('../middleware/authenticate.js');
 
 const router = express.Router();
 
