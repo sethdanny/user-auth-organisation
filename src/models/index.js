@@ -1,5 +1,9 @@
 const {Sequelize} = require('sequelize');
+const UserModel = require('./user');
+const OrganisationModel = require('./organisation');
+const OrganisationsOnUsersModel = require('./organisationsOnUsers');
 const dotenv = require('dotenv');
+
 dotenv.config()
 
 
@@ -14,6 +18,15 @@ const sequelize = new Sequelize(process.env.DATABASE_URI,{
 }
 });
 
+const User = UserModel(sequelize);
+const Organisation = OrganisationModel(sequelize);
+const OrganisationsOnUsers = OrganisationsOnUsersModel(sequelize);
+
+User.belongsToMany(Organisation, { through: OrganisationsOnUsers });
+Organisation.belongsToMany(User, { through: OrganisationsOnUsers });
+
+sequelize.sync({ alter: true });
+
 const testConnection = async () => {
     try {
         await sequelize.authenticate();
@@ -23,4 +36,10 @@ const testConnection = async () => {
     }
 }
 
-module.exports = {sequelize, testConnection}
+module.exports = {
+  sequelize,
+  testConnection,
+  User,
+  Organisation,
+  OrganisationsOnUsers
+}
