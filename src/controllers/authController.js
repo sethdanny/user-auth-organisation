@@ -61,13 +61,13 @@ const register = async (req, res) => {
       },
     });
   } catch (error) {
-      console.error('Error during registration:', error);
-      return res.status(400).json({
-      status: 'Bad request',
-      message: 'Registration unsuccessful',
-      //details: error.errors || error,
-      statusCode: 400,
-  })
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        return res.status(422).json({
+          errors: [{ field: 'email', message: 'Email already exists' }],
+        });
+      } else {
+        return res.status(500).json({ message: 'Internal Server Error' });
+      }
 };
 }
 
@@ -85,15 +85,12 @@ const login = async (req, res) => {
 
   try {
     const user = await User.findOne({ where: { email } });
+    console.log('User:', user); 
+    if(!user) return res.status(401).json({error: 'Invalid credentials'});
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({
-        status: 'Bad request',
-        message: 'Authentication failed',
-        statusCode: 401,
-      });
-    }
-
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return res.status(401).json({error: 'Invalid password!'});
+    
     const token = generateToken(user);
 
     return res.status(200).json({
@@ -111,10 +108,11 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('Error in login:', error);
     return res.status(400).json({
       status: 'Bad request',
       message: 'Authentication failed',
-      statusCode: 401,
+      statusCode: 400,
     });
   }
 };
