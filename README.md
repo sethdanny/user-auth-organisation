@@ -79,3 +79,6 @@ The server should now be running on `http://localhost:3000`.
   }
 }
 
+### Documentation
+* Postman - https://documenter.getpostman.com/view/27746757/2sA3e1BA6a
+
