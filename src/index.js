@@ -1,19 +1,19 @@
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const organisationRoutes = require('./routes/orgRoutes.js');
 const { sequelize, testConnection } = require('./models/index.js');
 const cors = require('cors');
 
-dotenv.config();
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5001;
 const app = express();
 
 testConnection();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use('/api/auth', authRoutes);
@@ -30,10 +30,8 @@ app.get('/', (req, res) => {
     res.json({message: 'Hello Welcome to User Authentication API'})
 })
 
-if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
         console.log(`Server is listening on port ${PORT}`);
     });
-}
 
 module.exports = app;

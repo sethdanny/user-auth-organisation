@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const sequelize = new Sequelize(process.env.DATABASE_URI, {
+const sequelize = new Sequelize("postgresql://postgres.bhnswxksimbnzqiagxdg:seth_daniels12@@aws-0-us-east-1.pooler.supabase.com:6543/postgres", {
   dialect: 'postgres',
   protocol: 'postgres',
   dialectOptions: {
