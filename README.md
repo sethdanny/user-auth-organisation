@@ -19,7 +19,7 @@ This project is a backend application for user authentication and organization m
 - **Authentication**: JSON Web Token (JWT)
 - **Password Hashing**: bcrypt
 - **Testing**: Mocha, Chai, and Supertest
-- **Deployment**: Heroku
+- **Deployment**: Railway
 
 ## Getting Started
 
@@ -55,16 +55,16 @@ The server should now be running on `http://localhost:3000`.
 ### Auth Endpoints
 * POST /auth/register - Register a new user and create a default organization.
     * Request Body:
-{
+`{
   "firstName": "string",
   "lastName": "string",
   "email": "string",
   "password": "string",
   "phone": "string"
-}.
+}`
 
 * Success Response:
-{
+`{
   "status": "success",
   "message": "Registration successful",
   "data": {
@@ -77,8 +77,10 @@ The server should now be running on `http://localhost:3000`.
       "phone": "string"
     }
   }
-}
+}`
 
 ### Documentation
 * Postman - https://documenter.getpostman.com/view/27746757/2sA3e1BA6a
+## Website:
+`https://user-auth-organisation-production.up.railway.app/`
 
