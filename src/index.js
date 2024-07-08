@@ -27,7 +27,7 @@ app.use('*', (req, res, next) => {
     })
 })
 app.get('/', (req, res) => {
-    res.send('Hello Welcome to User Authentication API')
+    res.json({message: 'Hello Welcome to User Authentication API'})
 })
 
 if (process.env.NODE_ENV !== 'test') {
