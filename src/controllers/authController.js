@@ -61,14 +61,12 @@ const register = async (req, res) => {
       },
     });
   } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
-        return res.status(422).json({
-          errors: [{ field: 'email', message: 'Email already exists' }],
-        });
-      } else {
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
-};
+    return res.status(400).json({
+      status: 'Bad request',
+      message: 'Registration unsuccessful',
+      statusCode: 400,
+    });
+}
 }
 
 const login = async (req, res) => {
