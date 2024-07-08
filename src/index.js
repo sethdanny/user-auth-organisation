@@ -26,6 +26,9 @@ app.use('*', (req, res, next) => {
         message: 'Not found'
     })
 })
+app.get('/', (req, res) => {
+    res.send('Hello Welcome to User Authentication API')
+})
 
 if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
