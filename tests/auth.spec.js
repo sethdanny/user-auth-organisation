@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../src/index');
 const { sequelize, User } = require('../src/models');
+const bcrypt = require('bcryptjs');
+
 
 jest.setTimeout(30000);
 
@@ -24,9 +26,9 @@ afterAll(async () => {
   }
 });
 
-/*afterEach(async () => {
+afterEach(async () => {
     await sequelize.truncate({ cascade: true });
-}); */
+});
 
 describe('Auth Endpoints', () => {
   it('should register a user successfully', async () => {
@@ -44,11 +46,12 @@ describe('Auth Endpoints', () => {
   });
 
   it('should login a user successfully', async () => {
+    const hashedPassword = await bcrypt.hash('password123', 10);
     const user = await User.create({
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
-      password: 'password123'
+      password: hashedPassword
     });
     console.log('Created user:', user);
 
